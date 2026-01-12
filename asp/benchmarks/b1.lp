@@ -1,13 +1,7 @@
-% Definizione posizioni dei camion
+truck(0, 0, 3, 1, vertical).      % Time=0, Id=0, X=3, Y=1, Orientation=vertical
+truck(0, 1, 1, 4, horizontal).    % Time=0, Id=1, X=1, Y=4, Orientation=horizontal
+truck(0, 2, 6, 4, vertical).      % Time=0, Id=2, X=6, Y=4, Orientation=vertical
 
-truck(0, 3, 1, vertical). % origine in 3, 1 e orientato verticalmente
-truck(0, 1, 4, horizontal). % origine in 1, 4 e orientato orizzontalmente
-truck(0,6, 4, vertical). % origine in 6, 4 e orientato verticalmente
+car(0, 3, 5, 1, horizontal).      % Time=0, Id=3, X=5, Y=1, Orientation=horizontal
 
-% Definizione posizioni delle auto
-
-car(0, 5, 1, horizontal). % origine in 5, 1 e orientato orizzontalmente
-
-% Definizione della posizione dell'auto rossa
-
-red_car(0, 1, 3, horizontal). % origine 1, 3 e orientato orizzontalmente
+red_car(0, 4, 1, 3, horizontal).  % Time=0, Id=4, X=1, Y=3, Orientation=horizontal

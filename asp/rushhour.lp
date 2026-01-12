@@ -1,40 +1,59 @@
-% Helper per generare offset
-offset(0..2).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definizione parametri iniziali
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Intervallo di tempo per dire mantenere lo stato dei veicoli
-time(0..50).
+% Dominio
+grid(1..6, 1..6).          % griglia 6x6
+time(0..20).               % intervallo temporale
+offset(0..2).              % helper per occupazione celle
 
-grid(1..6, 1..6).
+% Lunghezze veicoli
+length(truck,3).
+length(car,2).
+length(red_car,2).
 
-% Lunghezze dei vari veicoli
-length(truck, 3).
-length(car, 2).
-length(red_car, 2).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definizione veicoli all'istante 0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Definizione veicoli
-vehicle(Time, T, X, Y, O) :- truck(Time, X, Y, O), T = truck.
-vehicle(Time, T, X, Y, O) :- car(Time, X, Y, O), T = car.
-vehicle(Time, T, X, Y, O) :- red_car(Time, X, Y, O), T = red_car.
+vehicle(0, Id, truck, X, Y, O) :- time(0), truck(0, Id, X, Y, O).
+vehicle(0, Id, car, X, Y, O) :- time(0), car(0, Id, X, Y, O).
+vehicle(0, Id, red_car, X, Y, O) :- time(0), red_car(0, Id, X, Y, O).
 
-% Celle occupate da un veicolo
-busy(Time, T, X+I, Y) :- vehicle(Time, T, X, Y, horizontal), length(T, L), offset(I), I < L.
-busy(Time, T, X, Y+I) :- vehicle(Time, T, X, Y, vertical), length(T, L), offset(I), I < L.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Possibili evoluzioni dei veicoli
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% VINCOLI: 
+% Se non c'è nessun movimento che lo riguarda rimane fermo
+vehicle(Time+1, Id, Type, X, Y, O) :-
+    time(Time),
+    vehicle(Time, Id, Type, X, Y, O),
+    not moved(Time, Id).
 
-% Vincoli speciali per la macchina rossa
+% Mossa in orizzontale
+vehicle(Time+1, Id, Type, X+1, Y, horizontal) :-
+    time(Time),
+    move(Time, Id, forward),
+    vehicle(Time, Id, Type, X, Y, horizontal).
 
-:- red_car(Time, X, Y, O), O != horizontal.
-:- red_car(Time, X, Y, O), Y != 3.
+vehicle(Time+1, Id, Type, X-1, Y, horizontal) :-
+    time(Time),
+    move(Time, Id, backward),
+    vehicle(Time, Id, Type, X, Y, horizontal).
 
-% tutte le celle occupate devono essere nella griglia
+% Mossa in verticale
+vehicle(Time+1, Id, Type, X, Y+1, vertical) :-
+    time(Time),
+    move(Time, Id, forward),
+    vehicle(Time, Id, Type, X, Y, vertical).
 
-% Orientamento orizzontale X, X+1, X+2
-:- vehicle(Time, T, X, Y, horizontal), length(T, L), offset(I), I < L, not grid(X+I, Y).
+vehicle(Time+1, Id, Type, X, Y-1, vertical) :-
+    time(Time),
+    move(Time, Id, backward),
+    vehicle(Time, Id, Type, X, Y, vertical).
 
-% Orientamento verticale Y, Y+1, Y+2
-:- vehicle(Time, T, X, Y, vertical), length(T, L), offset(I), I < L, not grid(X, Y+I).
-
-% nessuna cella può essere occupata da più di un veicolo
-
-:- busy(Time, T1, X, Y), busy(Time, T2, X, Y), T1 != T2.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generazione delle mosse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{ move(Time, Id, D) } :- vehicle(Time, Id, _, _, _, _), D = forward; D = backward.
+moved(Time, Id) :- move(Time, Id, _).
