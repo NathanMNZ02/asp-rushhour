@@ -1,9 +1,20 @@
-truck(0, 3, 1, vertical). % origine in 3, 1 e orientato verticalmente
-truck(0, 1, 4, horizontal). % origine in 1, 4 e orientato orizzontalmente
-truck(0, 6, 2, vertical). % origine in 6, 2 e orientato verticalmente
+% veicoli: Id, Lunghezza, Orientamento
+% stato iniziale: S, Id, X, Y
 
-car(0, 4, 4, vertical). % origine in 4, 4 e orientato verticalmente
-car(0, 5, 5, horizontal). % origine in 5, 5 e orientato orizzontalmente
+veicolo(1, 2, orizzontale). % macchina rossa
+stato(1, 1, 4, 3). 
 
-red_car(0, 4, 3, horizontal). % origine 4, 3 e orientato orizzontalmente
+veicolo(2, 3, verticale). % camion giallo
+stato(1, 2, 3, 1).
 
+veicolo(3, 3, verticale). % camion viola
+stato(1, 3, 6, 2).
+
+veicolo(4, 3, orizzontale). % camion blu
+stato(1, 4, 1, 4).
+
+veicolo(5, 2, verticale). % macchina verde
+stato(1, 5, 4, 4).
+
+veicolo(6, 2, orizzontale). % macchina arancione
+stato(1, 6, 5, 5).

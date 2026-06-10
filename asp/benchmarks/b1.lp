@@ -1,7 +1,17 @@
-truck(0, 0, 3, 1, vertical).      % Time=0, Id=0, X=3, Y=1, Orientation=vertical
-truck(0, 1, 1, 4, horizontal).    % Time=0, Id=1, X=1, Y=4, Orientation=horizontal
-truck(0, 2, 6, 4, vertical).      % Time=0, Id=2, X=6, Y=4, Orientation=vertical
+% veicoli: Id, Lunghezza, Orientamento
+% stato iniziale: S, Id, X, Y
 
-car(0, 3, 5, 1, horizontal).      % Time=0, Id=3, X=5, Y=1, Orientation=horizontal
+veicolo(1, 2, orizzontale). % macchina rossa
+stato(1, 1, 1, 3).
 
-red_car(0, 4, 1, 3, horizontal).  % Time=0, Id=4, X=1, Y=3, Orientation=horizontal
+veicolo(2, 3, verticale). % camion giallo
+stato(1, 2, 3, 1).
+
+veicolo(3, 3, orizzontale). % camion viola
+stato(1, 3, 1, 4).
+
+veicolo(4, 3, verticale). % camion blu
+stato(1, 4, 6, 4).
+
+veicolo(5, 2, orizzontale). % macchina verde chiaro
+stato(1, 5, 5, 1).
